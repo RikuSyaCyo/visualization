@@ -1,0 +1,26 @@
+<html>
+<head>
+    <!-- jQuery -->
+    <script type="text/javascript" src="src/jquery.js"></script>
+    <!-- BEGIN TimelineJS -->
+    <script type="text/javascript" src="https://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
+    <script>
+        $(document).ready(function() {
+            createStoryJS({
+                type:       'timeline',
+                width:      '800',
+                height:     '600',
+                source:     'data/mydata'+'China'+'.json',
+                embed_id:   'my-timeline'
+            });
+        });
+    </script>
+    <!-- END TimelineJS -->
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div id="my-timeline"></div>
+</body>
+</html>

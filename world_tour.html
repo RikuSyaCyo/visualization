@@ -1,0 +1,98 @@
+﻿
+<html>
+ <head>  
+        <meta charset="utf-8">  
+        <title>World</title>  
+  </head> 
+<style>
+
+.map_path {
+  stroke: white;
+  stroke-width: 1;
+}
+
+.grid_path{
+  stroke: gray; 
+  stroke-width: 1;
+  fill:none;
+  opacity: 1;
+}
+
+.svg_position{
+  position: absolute;
+  top:75px;
+  left:570px;
+}
+
+.tooltip{
+  position:absolute;
+  width:120;
+  height:auto;
+  font-family: simsun;
+  font-size: 14px;
+  text-align: center;
+  border-style: solid;
+  border-width:1px;
+  background-color: white;
+  border-radius: 5px;
+  opacity: 0.75;
+}
+
+.news{
+  position:absolute;
+  font-size:15px;
+  top:710px;
+  width:1900px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+
+.title{
+  position:absolute;
+  top:110px;
+  left:920px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  width: 960px;
+}
+
+.img_left{
+  position:absolute;
+  left:0px;
+  top:0px;
+  z-index:-1;
+}
+
+.img_right{
+  position:absolute;
+  top:12px;
+  left:1542px;
+  z-index: -1;
+}
+
+.button{
+  width: 150px;
+  line-height: 38px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #bcbddc;
+  color: #fff;
+  border:none;
+  border-radius: 5px;
+  margin:0 20px 20px 0;
+  position: absolute;
+  overflow: hidden;
+  left:875px;
+  top:780px;
+}
+
+</style>
+<body>
+<h1></h1>
+<img src="pic/background_left.jpg" class="img_left"></img>
+<img src="pic/background_right.jpg" class="img_right"></img>
+<a href="eventMap.html"><button type="button" class="button">I want to know more</button></a>
+<script src="d3.min.js"></script>
+<script src="world.js"></script>
+</body>  
+</html>  

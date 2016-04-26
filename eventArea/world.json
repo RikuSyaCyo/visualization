@@ -1,0 +1,26 @@
+﻿{
+    "China": [
+        {
+            "time": "2009.07.05",
+            "location": [ 87.618, 43.763 ],
+            "eventID": "xinjiang1"
+        },
+        {
+            "time": "2008.03.14",
+            "location": [ 91.080, 29.633 ],
+            "eventID": "xizang1"
+        },
+        {
+            "time": "2014.03.01",
+            "location": [ 102.722, 25.016 ],
+            "eventID": "yunnan1"
+        }
+    ],
+    "France": [
+    {
+        "time": "2015.11.13",
+        "location": [ 2.371, 48.863 ],
+        "eventID": "Paris1"
+    }
+    ] 
+}

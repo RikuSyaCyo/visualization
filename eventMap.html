@@ -1,0 +1,173 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Details</title>
+    <style>
+        .tooltip {
+            position: absolute;
+            width: auto;
+            height: auto;
+            font-family: simsun;
+            font-size: 18px;
+            text-align: left;
+            border-style: solid;
+            border-width: 1px;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        .tooltip_return {
+            position: absolute;
+            width: 80px;
+            height: auto;
+            font-family: simsun;
+            font-size: 21px;
+            text-align: center;
+            border-style: solid;
+            border-width: 2px;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        .tooltip_event {
+            position: absolute;
+            width: 370px;
+            height: auto;
+            font-family: 微软雅黑;
+            font-size: 19px;
+            text-align: left;
+        }
+
+        .tooltip_text {
+            position: absolute;
+            width: auto;
+            height: auto;
+            font-family: simsun;
+            font-size: 18px;
+            text-align: left;
+            background-color: white;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 5px;
+        }
+
+        .svg_position {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: -1;
+        }
+
+        .global {
+            position: absolute;
+            top: 410px;
+            left: 0px;
+        }
+
+        .button {
+            position: absolute;
+            top:350px;
+            left: 9px;
+            width: 130px;
+            line-height: 38px;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f2f2f2;
+            color: #a5a5a5;
+            border: none;
+            border-radius: 5px;
+            position: absolute;
+            overflow: hidden;
+            font-family: 微软雅黑;
+            font-size: 10px;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #bcbddc;
+            stroke-width: 2px;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+
+        .printname {
+            position: absolute;
+            font-size: 250px;
+            font-family: 微软雅黑;
+            color: #606060;
+            z-index: -2;
+            top:350px;
+        }
+
+        .timeline {
+            position: absolute;
+            left: 20px;
+            top: 800px;
+            height: 800px;
+        }
+    </style>
+</head>
+<body>
+    <script src="d3.min.js"></script>
+    <script src="drawMap.js"></script>
+    <script src="drawStatistics.js"></script>
+    <link rel="stylesheet" href="css/jAlert-v3.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/jAlert-v3.min.js"></script>
+    <script src="js/jAlert-functions.min.js"></script>
+    <link title="timeline-styles" rel="stylesheet" href="css/timeline3.css" />
+    <script src="js/timeline3.js"></script>
+    <script src="alert.js"></script>
+    <img src="pic/background_global.png" class="global"></img>
+    <script>
+        var width = 1900;
+        var height = 960;
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("id", "mapSVG")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("class", "svg_position");
+        var tooltip = d3.select("body")
+                        .append("div")
+                        .attr("class", "tooltip")
+                        .attr("id", "tooltip")
+                        .style("opacity", 0.0);
+        var tooltip_event = d3.select("body")
+                       .append("div")
+                       .attr("class", "tooltip_event")
+                       .attr("id", "tooltip_event")
+                       .style("opacity", 0.0);
+        var tooltip_text = d3.select("body")
+                        .append("div")
+                        .attr("class", "tooltip_text")
+                        .attr("id", "tooltip_text")
+                        .style("opacity", 0);
+        var name = d3.selectAll("body")
+                     .append("div")
+                     .attr("id", "printname")
+                     .style("opacity", 0.0);
+        //var tooltip_text=d3.select("body")
+        //                .append("div")
+        //                .attr("class","tooltip_text")
+        //                .attr("id","tooltip_text")
+        //                .style("opacity", 0);
+        var button_return = d3.select("body")
+                    .append("button")
+                    .attr("id", "tooltip_return")
+                    .attr("class", "button")
+                    .html("←return to global")
+                    .on("click", function () {
+                        drawMap("mapSVG", "world", "tooltip", "tooltip_return");
+                    });
+        drawMap("mapSVG", "world", "tooltip", "tooltip_return");
+    </script>
+</body>
+
+</html>

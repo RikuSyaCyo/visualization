@@ -1,0 +1,29 @@
+﻿{
+    "world": {
+        "projection": "E",
+        "scale": 300,
+        "center0": 0,
+        "center1": 0,
+        "circleSize0": "7.5",
+        "circleSize1":"5",
+        "global": true             
+    },
+    "China": {
+        "projection": "M",
+        "scale": 850,
+        "center0": 107,
+        "center1": 36,
+        "circleSize0": "11",
+        "circleSize1":"7",
+        "global": false
+    },
+    "France": { 
+        "projection": "M",
+        "scale": 2600,
+        "center0": 2.7,
+        "center1": 46,
+        "circleSize0": "9.5",
+        "circleSize1":"6.5",
+        "global": false
+    }
+}
