@@ -116,6 +116,7 @@
 <body>
     <script src="d3.min.js"></script>
     <script src="drawMap.js"></script>
+    <script src="drawGlobalMap.js"></script>
     <script src="drawStatistics.js"></script>
     <link rel="stylesheet" href="css/jAlert-v3.css">
     <script src="js/jquery.js"></script>
@@ -166,7 +167,8 @@
                     .on("click", function () {
                         drawMap("mapSVG", "world", "tooltip", "tooltip_return");
                     });
-        drawMap("mapSVG", "world", "tooltip", "tooltip_return");
+        //drawMap("mapSVG", "world", "tooltip", "tooltip_return");
+        drawGlobalMap("mapSVG", "tooltip", "tooltip_return");
     </script>
 </body>
 
