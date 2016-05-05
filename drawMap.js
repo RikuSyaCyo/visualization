@@ -36,7 +36,7 @@ function drawMap(svgID,mapName,t1ID,breturnID)
          groups.remove();
          groups = svg.append("g")
                  .attr("id", "mapGroup");
-         d3.csv("./data/incident/countries_inc.csv", function (error, inciData) {
+         d3.csv("./data/incident/"+mapName+"_inc.csv", function (error, inciData) {
              if (error) return console.error(error);
              var incidents = new Array();
              var areas = new Object();
