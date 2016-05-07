@@ -11,10 +11,10 @@
     "China": {
         "projection": "M",
         "scale": 850,
-        "center0": 107,
+        "center0": 103,
         "center1": 36,
-        "circleSize0": "11",
-        "circleSize1":"7",
+        "circleSize0": "10",
+        "circleSize1":"6",
         "global": false
     },
     "France": { 

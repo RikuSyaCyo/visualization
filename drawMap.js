@@ -4,7 +4,18 @@ var dataset={"新疆":"2009.07.05打砸抢暴力犯罪事件",
                 "云南":"2014.03.01昆明火车站暴恐案"
 };
 var t2ID = "tooltip_event";
-
+var orgName=new Array("Al-Qa`ida","Islamic State of Iraq and the Levant (ISIL)","Al-Qa`ida in the Arabian Peninsula (AQAP)","Eastern Turkistan Islamic Movement (ETIM)","Al-Nusrah Front");
+var flag={
+    "Al-Qa`ida":false,
+    "Islamic State of Iraq and the Levant (ISIL)":false,
+    "Al-Qa`ida in the Arabian Peninsula (AQAP)":false,
+    "Eastern Turkistan Islamic Movement (ETIM)":false,
+    "Al-Nusrah Front":false
+};
+var orgID=new Array("alq","ISIL","AQAP","ETIM","aln");
+var orgbutton=0;
+var atkbutton=0;
+var color=new Array("#cb2e26","#83c3eb","#f1bd56","#0060a7","#87bb40");
 function drawMap(svgID,mapName,t1ID,breturnID)
 {
     var svg = d3.select("#"+svgID);
@@ -18,6 +29,7 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                                         .style("opacity", 0.0);
      var button_return = d3.select("#" + breturnID)
                            .style("opacity", 0.0);
+
      d3.json("./data/mapData.json", function (error, data) {
          if (error) return console.error(error);
          var mapData = data[mapName];
@@ -54,12 +66,15 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                .html(mapName)
                .attr("class", "printname")
                .style("opacity", 0.9);
+             d3.selectAll("#buttonTable")
+               .style("opacity",1);
              var timeline = d3.select("body")
                .append("div")
                .attr("id", "timeline-embed")
                .style("height", "350px")
                .style("opacity", 1.0);
              var data = "data/mydata" + mapName + ".json";
+             
              var additionalOptions = {
                  timenav_height: 200,
                  marker_padding: 25,
@@ -70,6 +85,8 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                  default_bg_color: { r: 242, g: 242, b: 242 }
              };
              timeline = new TL.Timeline('timeline-embed', data, additionalOptions);
+
+
              d3.json("./geojson/" + mapName + ".geojson", function (error, root) {
                  if (error) return console.error(error);
                  //绘制地图
@@ -122,37 +139,43 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                  circleGroups.each(function (d) {
                      var px = projection([d["longitude"], d["latitude"]]);
                      var group = d3.select(this);
+                     var defs=svg.append("defs");
+                     var gaussian=defs.append("filter")
+                                      .attr("id","gaussian");
+                     gaussian.append("feGaussianBlur")
+                            .attr("in","SourceGraphic")
+                            .attr("stdDeviation","1");
+
                      group.append("circle")
                               .attr("id", "C0"+d.eventid)
                               .attr("cx", px[0])
                               .attr("cy", px[1])
                               .attr("r", mapData.circleSize0 + "px")
-                              .style("fill", "white")
-                              .style("opacity", 0.75);
+                              .style("fill", "fff3f1")
+                              .style("opacity", 0.75)
+                              .style("filter","url(#gaussian)");
                      group.append("circle")
                              .attr("id", "C1"+d.eventid)
                              .attr("cx", px[0])
                              .attr("cy", px[1])
                              .attr("r", mapData.circleSize1 + "px")
-                             .style("fill", "#cd5c5c")
+                             .style("fill", "#ff867d")
                              .style("opacity", 1);
+                             
                      group.on("mouseover", function (d) {
-                         //var wd = d["nwound"];
-                         //var kill = d["nkill"];
-                         //if (wd == "NaN" )
-                         //    wd = 0;
-                         //if (kill == "NaN")
-                         //    kill = 0;
-                         //var sz = wd + kill;
-                         //var circlesize0 = sz *1.1 + mapData.circleSize0;
-                         //var circlesize1 = sz  + mapData.circleSize1;
-                         //console.log(circlesize0);
-                         //console.log(circlesize1);
-                         //return;
-                         //var circlesize0 = 100 / 1080 * 102;
-                         //var circlesize1 = 100 / 158 * 48;
-                         var circlesize0 = mapData.circleSize0 * 1.5;
-                         var circlesize1 = mapData.circleSize1 * 1.4;
+                         var wd = d["nwound"];
+                         var kill = d["nkill"];
+                         if (wd == "NaN" )
+                            wd = 0;
+                         if (kill == "NaN")
+                            kill = 0;
+                         var sz = wd + kill;
+                         
+                         var circlesize0 = wd / 50* 102;
+                         var circlesize1 = kill / 20 * 48;
+
+                         // var circlesize0 = mapData.circleSize0 * 1.5;
+                         // var circlesize1 = mapData.circleSize1 * 1.4;
                              var circle0 = d3.select("#" + "C0"+d.eventid)
                                                  .transition().duration(800)
                                                  .ease("elastic")
@@ -191,11 +214,168 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                              //timeline.goToId(d.eventname);
                          });
                      button_return.style("opacity", 1);
+
+                     //组织筛选
+                     for(var p in orgName)
+                     {
+                        d3.select("#"+orgID[p])
+                          .datum(orgName[p])
+                          .on("click",function(d){
+                            if(flag[d]==false)
+                            {
+                                for(var i in incidents)
+                                {
+
+                                    if (incidents[i]["gname"]!=d)
+                                    {
+                                       //console.log(d3.select("#C0"+incidents[i].eventid).style("fill"));
+                                        if(d3.select("#C0"+incidents[i].eventid).style("fill")=="rgb(255, 243, 241)")
+                                        {
+                                             d3.select("#C0"+incidents[i].eventid)
+                                               .style("fill","none");
+                                             d3.select("#C1"+incidents[i].eventid)
+                                               .style("fill","none");
+                                        }
+                                       
+                                    }
+                                    else if (incidents[i]["gname"]==d)
+                                    {
+                                        // d3.select("#C0"+incidents[i].eventid)
+                                        //   .style("fill",color[orgbutton]);
+                                        d3.select("#C1"+incidents[i].eventid)
+                                          .style("fill",color[orgbutton])
+                                          .style("opacity",1.0);
+                                        d3.select("#C0"+incidents[i].eventid)
+                                          .style("fill","white")
+                                          .style("opacity",1.0);
+                                         //console.log(incidents[i].eventid);
+                                    }
+                            
+                                }
+                                flag[d]=true;
+                                orgbutton++;
+                            }
+                            else{
+                                flag[d]=false;
+                                orgbutton--;
+                                for(var i in incidents)
+                                {
+
+                                    if((incidents[i]["gname"]!=d)&&(orgbutton==0))
+                                    {
+                                        d3.select("#C0"+incidents[i].eventid)
+                                          .style("fill","rgb(255, 243, 241)")
+                                          .style("opacity",1.0);
+                                        d3.select("#C1"+incidents[i].eventid)
+                                          .style("fill","rgb(255, 134, 125)")
+                                          .style("opacity",1.0);
+                                    }
+                                    else if (incidents[i]["gname"]==d)
+                                    {
+                                        d3.select("#C0"+incidents[i].eventid)
+                                          .style("fill","none");
+                                        d3.select("#C1"+incidents[i].eventid)
+                                          .style("fill","none");
+                                    }
+                                } 
+                                
+                            }
+                            
+                          })
+                     }
+
+                     //攻击类型筛选
+                     d3.select("#atkButton")
+                       .on("click",function()
+                       {
+                        if(atkbutton==0)
+                        {
+                            for(var p in incidents)
+                            {
+                                var thisevent=d3.select("#C0"+incidents[p].eventid).style("fill");
+                                //console.log(thisevent);
+                                if(thisevent!="none")
+                                {
+                                    
+                                    switch(incidents[p]["attacktype1"]){
+                                        case "1":
+                                        //onsole.log(incidents[p]["attacktype1"]);
+                                          d3.select("#C1"+incidents[p].eventid)
+                                            .style("fill","#66cccc");
+                                            break;
+                                        case "2":
+                                          d3.select("#C1"+incidents[p].eventid)
+                                            .style("fill","99cc33");
+                                            break;
+                                        case "3":
+                                          d3.select("#C1"+incidents[p].eventid)
+                                            .style("fill","#ff6600");
+                                            break;
+                                        case "4":
+                                          d3.select("#C1"+incidents[p].eventid)
+                                            .style("fill","#ffbfbf");
+                                            break;
+                                        case "5":
+                                          d3.select("#C1"+incidents[p].eventid)
+                                            .style("fill","#666699");
+                                            break;
+                                        case "6":
+                                          d3.select("#C1"+incidents[p].eventid)
+                                            .style("fill","#ffff99");
+                                            break;
+                                        case "7":
+                                          d3.select("#C1"+incidents[p].eventid)
+                                            .style("fill","#cc99cc");
+                                            break;
+                                        case "8":
+                                          d3.select("#C1"+incidents[p].eventid)
+                                            .style("fill","#e1657d");
+                                            break;
+                                        default: break;
+                                    }
+                                }
+                            }
+                            atkbutton=1;
+                        }
+                        else if(atkbutton==1)
+                        {
+                            for(var p in incidents)
+                            {
+                                var thisevent=d3.select("#C0"+incidents[p].eventid).style("fill");
+                                //console.log(thisevent);
+                                if(thisevent!="none")
+                                {
+                                    d3.select("#C0"+incidents[p].eventid)
+                                          .style("fill","rgb(255, 243, 241)")
+                                          .style("opacity",1.0);
+                                        d3.select("#C1"+incidents[p].eventid)
+                                          .style("fill","rgb(255, 134, 125)")
+                                          .style("opacity",1.0);
+                                }
+                            }
+                            atkbutton=0;
+                        }
+                       })
+                    // d3.select("#tagButton")
+                    //   .on("click",function()
+                    //   {
+                    //     for(var p in incidents)
+                    //     {
+                    //         //console.log(incidents[p].targtype1);
+                    //         var px = projection([incidents[p]["longitude"], incidents[p]["latitude"]]);
+                    //         //console.log(px);
+                    //         svg.append("text")
+                    //           .html(incidents[p].targtype1)
+                    //           .attr("x",px[0])
+                    //           .attr("y",px[1]);
+                    //     }
+                    //   })
                  });
              });
          });
      });
 }
+
 
 //for (var pA in eventAreas) {
 //    var pArea = eventAreas[pA];

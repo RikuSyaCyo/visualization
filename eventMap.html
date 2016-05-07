@@ -111,6 +111,54 @@
             top: 800px;
             height: 800px;
         }
+
+        .buttonTable{
+            position:absolute; 
+            left:1600px;
+            top:400px;
+        }
+        .choiceButton{
+            width: 100px;
+            line-height: 30px;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f2f2f2;
+            color: #a5a5a5;
+            border: none;
+            border-radius: 5px;
+            overflow: hidden;
+            font-family: 微软雅黑;
+        }
+        .orgTable
+        {
+            position:absolute;
+            opacity: 0;
+            width:180px;
+            border-radius: 5px;
+            background-color:#f2f2f2;
+            left:1710px;
+            top:380px;
+        }
+        .orgButton
+        {
+            font-family:微软雅黑;
+        }
+        .atk
+        {
+            position:absolute;
+            width:170px;
+            height:200px;
+            left:1430px;
+            top:400px;
+        }
+        .tag
+        {
+            position:absolute;
+            width:305px;
+            height:140px;
+            left:1595px;
+            top:510px;
+        }
     </style>
 </head>
 <body>
@@ -125,6 +173,7 @@
     <link title="timeline-styles" rel="stylesheet" href="css/timeline3.css" />
     <script src="js/timeline3.js"></script>
     <script src="alert.js"></script>
+    <script src="choose.js"></script>
     <img src="pic/background_global.png" class="global"></img>
     <script>
         var width = 1900;
@@ -165,11 +214,41 @@
                     .attr("class", "button")
                     .html("←return to global")
                     .on("click", function () {
-                        drawMap("mapSVG", "world", "tooltip", "tooltip_return");
+                        drawGlobalMap("mapSVG", "tooltip", "tooltip_return");
                     });
         //drawMap("mapSVG", "world", "tooltip", "tooltip_return");
         drawGlobalMap("mapSVG", "tooltip", "tooltip_return");
     </script>
+    <table id="buttonTable" class="buttonTable">
+        <tr>
+            <td><button id="orgButton" class="choiceButton" onclick="chooseOrg()">organization</button></td>
+        </tr>
+        <tr>
+            <td><button id="atkButton" class="choiceButton" onclick="chooseAtk()">attack type</button></td>
+        </tr>
+        <tr>
+            <td><button id="tagButton" class="choiceButton" onclick="chooseTag()">target type</button></td>
+        </tr>
+    </table>
+    <table id="orgTable" class="orgTable">
+        <tr>
+            <td><input type="checkbox" id="alq" class="orgButton">Al-Qa`ida</input></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" id="ISIL" class="orgButton">ISIL</input></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" id="AQAP" class="orgButton">AQAP</input></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" id="ETIM" class="orgButton">ETIM</input></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" id="aln" class="orgButton">al-Nusra Front</input></td>
+        </tr>
+    </table>
+    <img id="atkimg" class="atk" src="pic/atk.png"></img>
+    <img id="tagimg" class="tag" src="pic/tag.png"></img>
 </body>
 
 </html>
