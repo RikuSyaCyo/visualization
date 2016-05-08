@@ -90,12 +90,18 @@ function drawGlobalMap(svgID, t1ID, breturnID)
                                     return "#a5a6c9";
                                 }
                             })
-                            .attr("d", path);
+                            .attr("d", path)
+                            .style("cursor", function (d, i) {
+                                if (Areas.hasOwnProperty(d.properties.name))
+                                    return "pointer";
+                                else
+                                    return "default";
+                            });
                        //增加区域监听事件
                        paths.on("mouseover", function (d, i) {
                            if (Areas.hasOwnProperty(d.properties.name))
                            {
-                               d3.select(this).style("fill","#756bb1");                  
+                               d3.select(this).style("fill", "#756bb1");
                            }
                            tooltip1.style("left", (d3.event.pageX) + "px")
                                    .style("top", (d3.event.pageY + 20) + "px")

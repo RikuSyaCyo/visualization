@@ -173,7 +173,7 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                              wd = 0;
                           if (!(kill))
                               kill = 0;
-                          var base = 10;
+                          var base = mapData.base;
                           var sz = parseInt(wd) + parseInt(kill);
                           if (sz > base * 15)
                               sz = base * 15;
