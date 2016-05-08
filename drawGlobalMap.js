@@ -57,6 +57,12 @@ function drawGlobalMap(svgID, t1ID, breturnID)
                   .style("opacity",0.0);
                 d3.select("#tagimg")
                   .style("opacity",0.0);
+                d3.selectAll("rect")
+                  .remove();
+                d3.select("#axis")
+                  .remove();
+                d3.select("#mark")
+                  .remove();
                d3.csv("./data/eventCountry.csv", function (error, eventCountries) {
                    if (error) return console.error(error);
                    var Areas = new Object();
