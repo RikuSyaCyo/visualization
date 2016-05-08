@@ -181,14 +181,16 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                           var circlesize1 = mapData.circleSize1*(1+sz/base);
                          // var circlesize0 = mapData.circleSize0 * 1.5;
                          // var circlesize1 = mapData.circleSize1 * 1.4;
-                             var circle0 = d3.select("#" + "C0"+d.eventid)
-                                                 .transition().duration(800)
-                                                 .ease("elastic")
-                                                 .attr("r", circlesize0 + "px");
-                             var circle1 = d3.select("#" + "C1"+d.eventid)
-                                                 .transition().duration(800)
-                                                 .ease("elastic")
-                                                 .attr("r", circlesize1 + "px");
+                          var circle0 = d3.select("#" + "C0" + d.eventid)
+                                              .transition().duration(800)
+                                              .ease("elastic")
+                                              .attr("r", circlesize0 + "px")
+                                              .style("opacity", 0.6);
+                          var circle1 = d3.select("#" + "C1" + d.eventid)
+                                              .transition().duration(800)
+                                              .ease("elastic")
+                                              .attr("r", circlesize1 + "px")
+                                             .style("opacity", 0.9);
                              tooltip1.style("left", (d3.event.pageX) + "px")
                                      .style("top", (d3.event.pageY + 20) + "px")
                                      .style("opacity", 0.75)
