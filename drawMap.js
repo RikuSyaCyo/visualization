@@ -173,13 +173,12 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                              wd = 0;
                           if (!(kill))
                               kill = 0;
-                          var base = 40;
+                          var base = 10;
                           var sz = parseInt(wd) + parseInt(kill);
-                          if (sz > base * 3)
-                              sz = base * 3;
+                          if (sz > base * 15)
+                              sz = base * 15;
                           var circlesize0 = mapData.circleSize0*(1+sz/base);
                           var circlesize1 = mapData.circleSize1*(1+sz/base);
-
                          // var circlesize0 = mapData.circleSize0 * 1.5;
                          // var circlesize1 = mapData.circleSize1 * 1.4;
                              var circle0 = d3.select("#" + "C0"+d.eventid)
