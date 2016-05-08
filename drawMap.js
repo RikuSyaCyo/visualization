@@ -155,7 +155,7 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                               .attr("cx", px[0])
                               .attr("cy", px[1])
                               .attr("r", mapData.circleSize0 + "px")
-                              .style("fill", "fff3f1")
+                              .style("fill", "#fff3f1")
                               .style("opacity", 0.75)
                               .style("filter","url(#gaussian)");
                      group.append("circle")
@@ -167,19 +167,21 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                              .style("opacity", 1);
                              
                      group.on("mouseover", function (d) {
-                         // var wd = d["nwound"];
-                         // var kill = d["nkill"];
-                         // if (!(wd) )
-                         //    wd = 0;
-                         // if (!(kill))
-                         //    kill = 0;
-                         // var sz = wd + kill;
-                         
-                         // var circlesize0 = wd / 50* 102;
-                         // var circlesize1 = kill / 20 * 48;
+                          var wd = d["nwound"];
+                          var kill = d["nkill"];
+                          if (!(wd) )
+                             wd = 0;
+                          if (!(kill))
+                              kill = 0;
+                          var base = 40;
+                          var sz = parseInt(wd) + parseInt(kill);
+                          if (sz > base * 3)
+                              sz = base * 3;
+                          var circlesize0 = mapData.circleSize0*(1+sz/base);
+                          var circlesize1 = mapData.circleSize1*(1+sz/base);
 
-                          var circlesize0 = mapData.circleSize0 * 1.5;
-                          var circlesize1 = mapData.circleSize1 * 1.4;
+                         // var circlesize0 = mapData.circleSize0 * 1.5;
+                         // var circlesize1 = mapData.circleSize1 * 1.4;
                              var circle0 = d3.select("#" + "C0"+d.eventid)
                                                  .transition().duration(800)
                                                  .ease("elastic")
