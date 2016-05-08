@@ -624,25 +624,25 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                        .attr("y","495")
                        .text("max");
                     markgroups.append("circle")
-                       .attr("cx","1600")
+                       .attr("cx","1430")
                        .attr("cy","390")
                        .attr("r","5")
                        .attr("fill","#FF99CC");
                      markgroups.append("circle")
-                       .attr("cx","1600")
+                       .attr("cx","1430")
                        .attr("cy","370")
                        .attr("r","5")
                        .attr("fill","#CCCCFF");
                      markgroups.append("text")
-                       .attr("x","1610")
+                       .attr("x","1440")
                        .attr("y","395")
+                       .attr("font-size","5px")
                        .text("fatalities");
                     markgroups.append("text")
-                       .attr("x","1610")
+                       .attr("x","1440")
                        .attr("y","375")
+                       .attr("font-size","5px")
                        .text("injuries");
-
-
              });
          });
      });
