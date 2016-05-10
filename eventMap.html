@@ -117,6 +117,7 @@
             position:absolute; 
             left:1600px;
             top:400px;
+            opacity:0.0;
         }
         .choiceButton{
             width: 100px;
@@ -151,6 +152,7 @@
             height:200px;
             left:1430px;
             top:400px;
+            opacity: 0.0;
         }
         .tag
         {
@@ -159,6 +161,7 @@
             height:140px;
             left:1595px;
             top:510px;
+            opacity: 0.0;
         }
         .atkgroup
         {
@@ -213,14 +216,6 @@
         //                .attr("class","tooltip_text")
         //                .attr("id","tooltip_text")
         //                .style("opacity", 0);
-        var button_return = d3.select("body")
-                    .append("button")
-                    .attr("id", "tooltip_return")
-                    .attr("class", "button")
-                    .html("←return to global")
-                    .on("click", function () {
-                        drawGlobalMap("mapSVG", "tooltip", "tooltip_return");
-                    });
         //drawMap("mapSVG", "world", "tooltip", "tooltip_return");
         drawGlobalMap("mapSVG", "tooltip", "tooltip_return");
     </script>

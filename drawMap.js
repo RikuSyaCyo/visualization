@@ -29,10 +29,13 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                                         .style("opacity", 0.0);
      var button_return = d3.select("#" + breturnID)
                            .style("opacity", 0.0);
-    // d3.select("body")
-    //   .append("svg")
-    //   .attr("id","stackSVG")
-    //   .attr("class","stackSVG");
+
+      d3.select("#buttonTable")
+        .style("opacity",1.0);
+      d3.select("#atkimg")
+        .style("opacity",1.0);
+      d3.select("#tagimg")
+        .style("opacity",1.0);
      d3.json("./data/mapData.json", function (error, data) {
          if (error) return console.error(error);
          var mapData = data[mapName];
@@ -223,7 +226,6 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                          });
                     
                  });
-                button_return.style("opacity", 1);
 
                      //组织筛选
                      for(var p in orgName)
@@ -264,6 +266,7 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                                 }
                                 flag[d]=true;
                                 orgbutton++;
+                                //console.log(orgbutton); 
                             }
                             else{
                                 flag[d]=false;
@@ -442,14 +445,18 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                     var yScale=d3.scale.linear()
                                  .domain([0,maxCount])
                                  .range([0,yRangeWidth]);
-                    var color=new Array("#FF99CC","#CCCCFF");
+                    var stackcolor=new Array("#FF99CC","#CCCCFF");
                     var stackgroups=svg.append("g")
                                     .attr("id","stackgroup")
                                     .selectAll("g")
                                     .data(data)
                                     .enter()
                                     .append("g")
-                                    .style("fill",function(d,i){return color[i];});
+                                    .style("fill",function(d,i){return stackcolor[i];});
+                    var stacktooltip=d3.select("body")
+                                         .append("div")
+                                         .attr("id","stacktooltip")
+                                         .attr("class","tooltip");
                     var rects=stackgroups.selectAll("rect")
                                     .data(function(d){return d.number;})
                                     .enter()
@@ -463,14 +470,22 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                                     })
                                     .attr("height",function(d){return yScale(d.y);})
                                     .attr("transform","translate("+padding.left+","+padding.top+")")
-                                    .on("mouseover",function(d,i){
-
+                                    .on("mouseover",function(d){
+                                      //console.log(d.count);
+                                      stacktooltip.style("left", (d3.event.pageX) + "px")
+                                         .style("top", (d3.event.pageY+10) + "px")
+                                         .style("opacity", 0.75)
+                                         .html(d.count);
                                     })
                                     .on("mouseout",function(d,i){
-
+                                      stacktooltip.style("opacity",0.0);
                                     });
 
                     //目标类型堆栈图
+                    var typetooltip=d3.select("body")
+                                         .append("div")
+                                         .attr("id","typetooltip")
+                                         .attr("class","tooltip");
                     var type=new Array();
                     for(var i=0;i<15;i++)
                     {
@@ -480,7 +495,7 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                             type[i][j]=0;
                         }
                     }
-                    var typedataset=new Array();
+                   
                     for(var p in incidents)
                     {
                         type[incidents[p].iyear-2000][incidents[p].targtype1-1]+=1;
@@ -490,20 +505,54 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                                     .attr("id","typegroup")
                     var x=1508;
                     var y=630;
+
                     for(var i=0;i<15;i++)
                     {
                         for(var j=0;j<22;j++)
                         {
                             var color_now=204-type[i][j]*30;
                             if(color_now==0) color_now=0;
-                            var color="rgb("+color_now+","+color_now+",255)";
+                            var typecolor="rgb("+color_now+","+color_now+",255)";
                             y-=7;
+                            var rect_now=new Object();
+                            rect_now.type=j;
+                            rect_now.count=type[i][j];
+                            rect_now.year=i;
+                            //console.log(type[recordi][recordj]);
                             typegroups.append("rect")
-                                    .style("fill",color)
+                                    .style("fill",typecolor)
+                                    .attr("id","rect"+i+j)
                                     .attr("x",x+"px")
                                     .attr("y",y+"px")
                                     .attr("width","20px")
-                                    .attr("height","5px");
+                                    .attr("height","5px")
+                                    .datum(rect_now)
+                                    .on("mouseover",function(d){
+                                      console.log(d);
+                                      d3.select("#rect"+d.year+d.type)
+                                        .style("stroke","black")
+                                        .style("stroke-width","1")
+                                        .transition()
+                                        .duration(800)
+                                        .ease("elastic")
+                                        .attr("width","23px")
+                                        .attr("height","10px");
+                                      typetooltip.style("left", (d3.event.pageX) + "px")
+                                         .style("top", (d3.event.pageY + 10) + "px")
+                                         .style("opacity", 0.75)
+                                         .style("font-size","5px")
+                                         .html("type:"+d.type+"<br>"+"count:"+d.count);
+                                    })
+                                    .on("mouseout",function(d){
+                                      d3.select("#rect"+d.year+d.type)
+                                        .style("stroke-width","0")
+                                        .transition()
+                                        .duration(800)
+                                        .ease("elastic")
+                                        .attr("width","20px")
+                                        .attr("height","5px");
+                                      typetooltip.style("opacity",0.0);
+                                    })
                         }
                         x+=24;
                         y=630;
@@ -579,6 +628,16 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                                     .attr("height",function(d){return atkyScale(d.y);})
                                     .attr("transform",function(d){
                                         return "translate("+atkpadding.left+","+atkpadding.top+")"+"rotate(180,185 53)";
+                                    })
+                                    .on("mouseover",function(d){
+                                      //console.log(d);
+                                      stacktooltip.style("left", (d3.event.pageX) + "px")
+                                         .style("top", (d3.event.pageY + 10) + "px")
+                                         .style("opacity", 0.75)
+                                         .html(d.count);
+                                    })
+                                    .on("mouseout",function(d,i){
+                                      stacktooltip.style("opacity",0.0);
                                     });
 
                     //坐标轴
@@ -627,25 +686,55 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                        .attr("y","495")
                        .text("max");
                     markgroups.append("circle")
-                       .attr("cx","1600")
+                       .attr("cx","1430")
                        .attr("cy","390")
                        .attr("r","5")
                        .attr("fill","#FF99CC");
                      markgroups.append("circle")
-                       .attr("cx","1600")
+                       .attr("cx","1430")
                        .attr("cy","370")
                        .attr("r","5")
                        .attr("fill","#CCCCFF");
                      markgroups.append("text")
-                       .attr("x","1610")
+                       .attr("x","1440")
                        .attr("y","395")
+                       .attr("font-size","5px")
                        .text("fatalities");
                     markgroups.append("text")
-                       .attr("x","1610")
+                       .attr("x","1440")
                        .attr("y","375")
+                       .attr("font-size","5px")
                        .text("injuries");
+                    markgroups.append("text")
+                       .attr("x","1430")
+                       .attr("y","750")
+                       .attr("font-size","5px")
+                       .text("number of incidents");
 
-
+                  //返回世界地图
+                  var button_return = d3.select("body")
+                    .append("button")
+                    .attr("id", "tooltip_return")
+                    .attr("class", "button")
+                    .html("←return to global")
+                    .on("click", function () {
+                      d3.selectAll("img")
+                        .style("opacity",1.0);
+                      d3.select("#printname")
+                        .style("opacity",0.0);
+                      d3.select("#timeline-embed")
+                        .remove();
+                      d3.select("#circle")
+                       .style("opacity", 0.0);
+                      d3.selectAll("rect")
+                        .remove();
+                      d3.select("#axis")
+                        .remove();
+                      d3.select("#mark")
+                        .remove();
+                        drawGlobalMap("mapSVG", "tooltip", "tooltip_return");
+                    });
+                button_return.style("opacity", 1);
              });
          });
      });

@@ -41,28 +41,6 @@ function drawGlobalMap(svgID, t1ID, breturnID)
                 if (error) return console.error(error);            
                 svg.style("top", "0px")
                    .style("height","960px");
-                d3.selectAll("img")
-                  .style("opacity",1.0);
-                d3.select("#printname")
-                  .style("opacity",0.0);
-                d3.select("#timeline-embed")
-                  .remove();
-                d3.select("#circle")
-                  .style("opacity", 0.0);
-                d3.select("#buttonTable")
-                  .style("opacity",0.0);
-                d3.select("#orgTable")
-                  .style("opacity",0.0);
-                d3.select("#atkimg")
-                  .style("opacity",0.0);
-                d3.select("#tagimg")
-                  .style("opacity",0.0);
-                d3.selectAll("rect")
-                  .remove();
-                d3.select("#axis")
-                  .remove();
-                d3.select("#mark")
-                  .remove();
                d3.csv("./data/eventCountry.csv", function (error, eventCountries) {
                    if (error) return console.error(error);
                    var Areas = new Object();
