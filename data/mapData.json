@@ -1,11 +1,11 @@
 ﻿{
     "world": {
         "projection": "E",
-        "scale": 250,
+        "scale": 300,
         "center0": 0,
         "center1": 0,
         "circleSize0": "7.5",
-        "circleSize1":"3.5",
+        "circleSize1":"3",
         "global": true             
     },
     "China": {
