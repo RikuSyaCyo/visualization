@@ -226,6 +226,37 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                          });
                     
                  });
+                   //事件之间的联系
+                    var linegroups=svg.append("g")
+                                      .attr("id","linegroups");
+                    var linePath=d3.svg.line();
+
+                    for(var p in incidents)
+                    {
+                      var related=incidents[p].related.split(",");
+                      if(related[0]!=""){
+                        for(var i=0;i<related.length;i++)
+                        {
+                          for(var j in incidents)
+                          {
+                            if(incidents[j].eventid==related[i])
+                            {
+                              var px1 = projection([incidents[p]["longitude"], incidents[p]["latitude"]]);
+                              var px2 = projection([incidents[j]["longitude"], incidents[j]["latitude"]]);
+                              var lines=new Array();
+                              lines[0]=px1;
+                              lines[1]=px2;
+                              linegroups.append("path")
+                                        .attr("d",linePath(lines))
+                                        .attr("stroke","black")
+                                        .attr("stroke-width","2px")
+                                        .attr("fill","none")
+                                        .style("opacity",0.3)
+                            }
+                          }
+                        }
+                      }
+                    }
 
                      //组织筛选
                      for(var p in orgName)
@@ -738,6 +769,8 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                         .style("opacity",0.0);
                       d3.select("#tagimg")
                         .style("opacity",0.0);
+                      d3.select("#linegroups")
+                        .remove();
                         drawGlobalMap("mapSVG", "tooltip", "tooltip_return");
                     });
                 button_return.style("opacity", 1);
