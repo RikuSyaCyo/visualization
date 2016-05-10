@@ -732,6 +732,12 @@ function drawMap(svgID,mapName,t1ID,breturnID)
                         .remove();
                       d3.select("#mark")
                         .remove();
+                      d3.select("#buttonTable")
+                        .style("opacity",0.0);
+                      d3.select("#atkimg")
+                        .style("opacity",0.0);
+                      d3.select("#tagimg")
+                        .style("opacity",0.0);
                         drawGlobalMap("mapSVG", "tooltip", "tooltip_return");
                     });
                 button_return.style("opacity", 1);
